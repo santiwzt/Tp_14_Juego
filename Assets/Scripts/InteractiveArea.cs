@@ -5,11 +5,15 @@ using UnityEngine;
 public class InteractiveArea : MonoBehaviour
 {
     public int score = 0;
+    public int puntajeMaximo = 1;
+
     private UIManager uiManager;
+    private GameManager gameManager;
 
     void Awake()
     {
         uiManager = FindObjectOfType<UIManager>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -22,6 +26,13 @@ public class InteractiveArea : MonoBehaviour
             Debug.Log("Se ha recolectado: " + other.gameObject.name);
 
             Destroy(other.gameObject);
+
+            if (score >= puntajeMaximo)
+            {
+                gameManager.juegoTerminado = true;
+                uiManager.MostrarPantallaWin();
+                Time.timeScale = 0;
+            }
         }
     }
 }
